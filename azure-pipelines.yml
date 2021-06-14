@@ -20,6 +20,8 @@ stages:
   jobs:
   - job: Build
     displayName: Build
+    strategy:
+     parallel: 1
     pool:
       vmImage: ubuntu-latest
       demands: Limit -equals DisableParallel 
