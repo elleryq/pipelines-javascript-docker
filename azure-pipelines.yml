@@ -39,4 +39,4 @@ stages:
         script: |
           # Write your commands here
           
-          sudo apt-get cache search oc
+          sudo apt-cache search oc
