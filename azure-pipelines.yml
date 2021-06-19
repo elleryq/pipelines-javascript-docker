@@ -46,8 +46,6 @@ stages:
           build_name=$(oc get deployment/js-app -n azure-devops-pipeline -o json | jq ".items[].metadata.name")
           if [ -n ${build_name} ]; then
             oc new-app --name js-app -n azure-devops-pipeline https://github.com/elleryq/pipelines-javascript-docker --context-dir=/app --strategy=docker
-            oc expose service js-app
-            oc get route
           else
             oc start-build --name js-app
           fi
