@@ -39,9 +39,9 @@ stages:
           # Write your commands here
           
           sudo apt-get install wget
-          wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
+          wget -q https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
           tar xf openshift-client-linux.tar.gz
-          mv {oc,kubectl} /usr/local/bin
-          oc login https://api.flab-ocp.f-lab.experteam.com.tw:6443 --token=$(OC_TOKEN)
+          sudo mv {oc,kubectl} /usr/local/bin
+          oc login https://api.flab-ocp.f-lab.experteam.com.tw:6443 --token=$(OC_TOKEN) --insecure-skip-tls-verify=true
           oc new-build 
           cat $(Build.SourcesDirectory)/app/Dockerfile | oc new-build --name js-app --dockerfile='-' -n azure-devops-pipeline
