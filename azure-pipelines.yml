@@ -43,9 +43,11 @@ stages:
           sudo mv {oc,kubectl} /usr/local/bin
           oc login https://api.flab-ocp.f-lab.experteam.com.tw:6443 --token=$(OC_TOKEN) --insecure-skip-tls-verify=true
 
-          build_name=$(oc get build -n azure-devops-pipeline -o json | jq ".items[].metadata.name")
+          build_name=$(oc get deployment/js-app -n azure-devops-pipeline -o json | jq ".items[].metadata.name")
           if [ -n ${build_name} ]; then
-            oc new-build --name js-app -n azure-devops-pipeline https://github.com/elleryq/pipelines-javascript-docker --context-dir=/app --strategy=docker
+            oc new-app --name js-app -n azure-devops-pipeline https://github.com/elleryq/pipelines-javascript-docker --context-dir=/app --strategy=docker
+            oc expose service js-app
+            oc get route
           else
             oc start-build --name js-app
           fi
