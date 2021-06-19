@@ -38,4 +38,8 @@ stages:
         script: |
           # Write your commands here
           
-          sudo apt-cache search oc
+          sudo apt-get install wget
+          wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
+          tar xf openshift-client-linux.tar.gz
+          mv {oc,kubectl} /usr/local/bin
+          oc --help
