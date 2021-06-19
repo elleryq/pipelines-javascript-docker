@@ -47,5 +47,5 @@ stages:
           if ! oc get deployment/js-app -n azure-devops-pipeline -o json; then
             oc new-app --name js-app -n azure-devops-pipeline https://github.com/elleryq/pipelines-javascript-docker --context-dir=/app --strategy=docker
           else
-            oc start-build --name js-app
+            oc start-build js-app -n azure-devops-pipeline
           fi
