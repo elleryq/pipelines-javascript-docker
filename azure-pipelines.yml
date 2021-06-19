@@ -25,13 +25,13 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/app/Dockerfile'
-        tags: |
-          $(tag)
+#    - task: Docker@2
+#      displayName: Build an image
+#      inputs:
+#        command: build
+#        dockerfile: '$(Build.SourcesDirectory)/app/Dockerfile'
+#        tags: |
+#          $(tag)
     - task: Bash@3
       inputs:
         targetType: 'inline'
@@ -42,4 +42,6 @@ stages:
           wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
           tar xf openshift-client-linux.tar.gz
           mv {oc,kubectl} /usr/local/bin
-          oc --help
+          oc login https://api.flab-ocp.f-lab.experteam.com.tw:6443 --token=$(OC_TOKEN)
+          oc new-build 
+          cat $(Build.SourcesDirectory)/app/Dockerfile | oc new-build --name js-app --dockerfile='-' -n azure-devops-pipeline
