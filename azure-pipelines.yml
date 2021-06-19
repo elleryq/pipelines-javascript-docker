@@ -24,7 +24,6 @@ stages:
      parallel: 1
     pool:
       vmImage: ubuntu-latest
-      demands: Limit -equals DisableParallel 
     steps:
     - task: Docker@2
       displayName: Build an image
