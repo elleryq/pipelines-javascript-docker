@@ -38,10 +38,14 @@ stages:
         script: |
           # Write your commands here
           
-          sudo apt-get install wget
           wget -q https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
           tar xf openshift-client-linux.tar.gz
           sudo mv {oc,kubectl} /usr/local/bin
           oc login https://api.flab-ocp.f-lab.experteam.com.tw:6443 --token=$(OC_TOKEN) --insecure-skip-tls-verify=true
-          oc new-build 
-          cat $(Build.SourcesDirectory)/app/Dockerfile | oc new-build --name js-app --dockerfile='-' -n azure-devops-pipeline
+
+          build_name=$(oc get build -n azure-devops-pipeline -o json | jq ".items[].metadata.name")
+          if [ -n ${build_name} ]; then
+            oc new-build --name js-app -n azure-devops-pipeline https://github.com/elleryq/pipelines-javascript-docker -context-dir=/app --strategy=docker
+          else
+            oc start-build --name js-app
+          fi
